@@ -12,7 +12,7 @@ $ ip_location 61.152.87.49  # 中国-上海市-上海市
 ## xjz_traceroute
 
 ```
-$ xjz_traceroute baidu.com
+$ geo_traceroute baidu.com
 ```
 
 output
