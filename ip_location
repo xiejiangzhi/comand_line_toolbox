@@ -1,0 +1,15 @@
+#! /usr/bin/env ruby
+
+require 'uri'
+require 'net/http'
+require 'json'
+
+IP_INFO_URL = 'http://ip.taobao.com/service/getIpInfo.php'
+
+ip = ARGV.first
+uri = URI.parse("#{IP_INFO_URL}?ip=#{ip}")
+res = Net::HTTP.get_response(uri)
+ip_info = JSON.parse(res.body)['data'] || {}
+location = ip_info.values_at('country', 'region', 'city')
+puts location.map { |str| (str && str.length > 0) ? str : nil }.compact.join('-')
+

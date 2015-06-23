@@ -1,0 +1,27 @@
+#! /usr/bin/env ruby
+
+require 'net/http'
+require 'uri'
+require 'json'
+require 'pry'
+
+def execute(command, stdout = '/dev/null', stderr = '/dev/null')
+end
+
+def fetch_ip_location(ip)
+  `ip_location #{ip}`.strip
+end
+
+def parse_ip(data)
+  data.gsub!(/\([\d\.]+\)/) do |match_str|
+    ip = match_str[1..-2]
+    match_str.tap do |str|
+      str[-1] = " #{fetch_ip_location(ip)})"
+    end
+  end
+end
+
+IO.popen("traceroute #{ARGV.join(' ')}") do |out_io|
+  out_io.each {|line| puts parse_ip(line) }
+end
+
